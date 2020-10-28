@@ -8,10 +8,10 @@
 import Foundation
 
 
-class User: NSObject, NSCoding {
-  var username: String
-  var password: String
-  var todos: [Todo]
+class User: NSObject, NSCoding, Codable {
+  var username: String = ""
+  var password: String = ""
+  var todos: [Todo] = []
   
   init(username: String, password: String, todos: [Todo]) {
     self.username = username
@@ -27,10 +27,25 @@ class User: NSObject, NSCoding {
     self.init(username: username, password: password, todos: todos)
      
   }
+  
+  required convenience init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    let username = try container.decode(String.self, forKey: .username)
+    let password = try container.decode(String.self, forKey: .password)
+    let todos = try container.decode([Todo].self, forKey: .todos)
+    
+    self.init(username: username, password: password, todos: todos)
+  }
 
   func encode(with aCoder: NSCoder) {
     aCoder.encode(password, forKey: "password")
     aCoder.encode(username, forKey: "username")
     aCoder.encode(todos, forKey: "todos")
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case username
+    case password
+    case todos
   }
 }

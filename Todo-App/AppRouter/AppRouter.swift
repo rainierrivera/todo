@@ -14,7 +14,6 @@ final class AppRouter {
   init(window: UIWindow) {
     navigationController = UINavigationController()
     window.rootViewController = navigationController
-    // 1
     store.subscribe(self) {
       $0.select {
         $0.routerState
@@ -22,7 +21,6 @@ final class AppRouter {
     }
   }
   
-  // 2
   fileprivate func pushViewController(identifier: String, animated: Bool) {
     let viewController = instantiateViewController(identifier: identifier)
     let newViewControllerType = type(of: viewController)

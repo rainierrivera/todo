@@ -9,13 +9,6 @@ import ReSwift
 
 class RegisterViewController: UIViewController {
 
-  // MARK: Privates
-  
-  private let userDefaults = AppUserDefault.shared
-  
-  @IBOutlet private weak var usernameTextField: UITextField!
-  @IBOutlet private weak var passwordTextField: UITextField!
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -25,6 +18,19 @@ class RegisterViewController: UIViewController {
       }
     }
   }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    store.unsubscribe(self)
+  }
+  
+  // MARK: Privates
+  
+  private let userDefaults = AppUserDefault.shared
+  
+  @IBOutlet private weak var usernameTextField: UITextField!
+  @IBOutlet private weak var passwordTextField: UITextField!
+  
   @IBAction private func registerAction(_ anyObject: AnyObject) {
     guard usernameTextField.text?.isEmpty == false || passwordTextField.text?.isEmpty == false  else {
       return
@@ -62,6 +68,8 @@ class RegisterViewController: UIViewController {
     
   }
 }
+
+// MARK: Extensions
 
 extension RegisterViewController: StoreSubscriber {
   func newState(state: RegisterState) {

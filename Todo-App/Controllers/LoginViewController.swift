@@ -12,12 +12,6 @@ class LoginViewController: UIViewController {
   @IBOutlet private weak var usernameTextField: UITextField!
   @IBOutlet private weak var passwordTextField: UITextField!
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-  
-  }
-  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
@@ -32,7 +26,7 @@ class LoginViewController: UIViewController {
       store.dispatch(RoutingAction(destination: .login))
       store.dispatch(AutoLoginAction())
     }
-  
+    
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -44,8 +38,10 @@ class LoginViewController: UIViewController {
   // MARK: Privates
   
   @IBAction private func registerAction() {
+    usernameTextField.text = ""
+    passwordTextField.text = ""
+    view.endEditing(true)
     let routerDestination: RoutingDestination = .register
-    
     store.dispatch(RoutingAction(destination: routerDestination))
   }
   

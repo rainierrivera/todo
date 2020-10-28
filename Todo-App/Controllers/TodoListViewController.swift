@@ -22,6 +22,8 @@ class TodoListViewController: UIViewController {
     super.viewDidLoad()
     
     tableView.delegate = self
+    
+    tableView.tableFooterView = UIView()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +79,8 @@ extension TodoListViewController: UITableViewDelegate {
 extension TodoListViewController: StoreSubscriber {
   func newState(state: TodoListState) {
     DispatchQueue.main.async {
-      self.todos = state.todos
+      self.todos = state.todos.sorted(by: >)
+      
       self.tableDataSource = TableDataSource(cellIdentifier:"TodoCell", models: self.todos) {cell, model in
         cell.textLabel?.text = model.name
         cell.accessoryType = model.isDone ? .checkmark : .none

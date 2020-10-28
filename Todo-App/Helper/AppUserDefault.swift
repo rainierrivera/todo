@@ -16,6 +16,7 @@ class AppUserDefault {
     static let userKeys = "User"
     static let todosKeys = "todos"
     static let currentUser = "currentUser"
+    static let allUsers = "allUsers"
   }
   
   init() {
@@ -23,14 +24,7 @@ class AppUserDefault {
   }
   
   func saveUser(user: User) {
-    do {
-      let data: Data = try NSKeyedArchiver.archivedData(withRootObject: user,
-                                                    requiringSecureCoding: false)
-      userDefaults.set(data, forKey: "\(ConstantKeys.userKeys)-\(user.username)")
-      userDefaults.synchronize()
-    } catch {
-      fatalError("Unable to save User")
-    }
+    addSaveUser(user: user)
   }
   
   func getTodos() -> [Todo] {
@@ -47,7 +41,12 @@ class AppUserDefault {
     }
     
     do {
-      return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? User
+      guard let user = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? User else {
+        return nil
+      }
+      
+      return  getAllUsers().filter { user.username == $0.username }.first
+      
     } catch {
       fatalError("loadWidgetDataArray - Can't encode data: \(error)")
     }
@@ -72,47 +71,44 @@ class AppUserDefault {
     userDefaults.synchronize()
   }
   
-  func isUserExist(with username: String) -> Bool {
-    return isKeyPresentInUserDefaults(key: "\(ConstantKeys.userKeys)-\(username)")
+  func getUser(with username: String) -> User? {
+    let users = getAllUsers()
+    return users.filter { $0.username == username }.first
   }
   
-  func getUser(with username: String) -> User? {
-    guard let data = userDefaults.data(forKey: "\(ConstantKeys.userKeys)-\(username)") else {
-      return nil
+  func isUserExist(with username: String) -> Bool {
+    let users = getAllUsers()
+    return users.filter { $0.username == username }.first != nil
+  }
+  
+  func getAllUsers() -> [User] {
+    guard userDefaults.data(forKey: ConstantKeys.allUsers) != nil else {
+      return []
     }
-    do {
-      return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? User
-    } catch {
-      fatalError("loadWidgetDataArray - Can't encode data: \(error)")
-    }
+    return Utility.shared.retrieveUserFromJsonFile() ?? []
   }
   
   // MARK: Privates
   
-  /// Use this to make Json File on local directory with selected User
-  private func makeJsonFile(with user: User, fileName: String) {
-    do {
-      // Convert object to Data
-      let data: Data = try NSKeyedArchiver.archivedData(withRootObject: user,
-                                                    requiringSecureCoding: false)
-
-      let url = FileManager.default.urls(for: .documentDirectory,
-                                         in: .userDomainMask).first
-      if let url = url {
-        let fileUrl = url.appendingPathComponent("\(fileName).json")
-        
-        do {
-          try data.write(to: fileUrl, options: .atomicWrite)
-        } catch {
-          print(error)
-        }
-      }
-    } catch {
-      fatalError("Unable to convert user to Data: - Check Decoding/Encoding")
+  private func addSaveUser(user: User) {
+    var users = [User]()
+    if getAllUsers().count > 0 {
+      users = getAllUsers()
     }
-  }
   
-  private func isKeyPresentInUserDefaults(key: String) -> Bool {
-      return UserDefaults.standard.object(forKey: key) != nil
+    if isUserExist(with: user.username) {
+      users.first { $0.username == user.username }?.todos = user.todos
+    } else {
+      users.append(user)
+    }
+    do {
+      let data: Data = try NSKeyedArchiver.archivedData(withRootObject: users,
+                                                    requiringSecureCoding: false)
+      userDefaults.set(data, forKey: ConstantKeys.allUsers)
+      userDefaults.synchronize()
+      Utility.shared.makeJsonFile()
+    } catch {
+      fatalError("Unable to save User")
+    }
   }
 }

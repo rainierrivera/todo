@@ -13,8 +13,6 @@ class AddTodoViewController: UIViewController {
   @IBOutlet private weak var doneButton: UIButton!
   @IBOutlet private weak var deleteButton: UIButton!
   
-  private let appUserDefault = AppUserDefault.shared
-  
   var todo: Todo? {
     didSet {
       addTodoTextField.text = todo?.name
@@ -37,6 +35,12 @@ class AddTodoViewController: UIViewController {
     
     store.unsubscribe(self)
   }
+  
+  
+  // MARK: Privates
+  
+  private let appUserDefault = AppUserDefault.shared
+  // MARK: Actions
   
   @IBAction private func doneAction(_ anyObject: AnyObject) {
   
@@ -71,6 +75,8 @@ class AddTodoViewController: UIViewController {
     }
   }
 }
+
+// MARK: Extensions
 
 extension AddTodoViewController: StoreSubscriber {
   func newState(state: TodoState) {
