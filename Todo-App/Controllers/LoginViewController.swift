@@ -41,6 +41,7 @@ class LoginViewController: UIViewController {
     navigationController?.setNavigationBarHidden(false, animated: true)
   }
   
+  // MARK: Privates
   
   @IBAction private func registerAction() {
     let routerDestination: RoutingDestination = .register
@@ -62,17 +63,29 @@ class LoginViewController: UIViewController {
   }
   
   private func moveToDoList() {
-    DispatchQueue.main.async {
-      store.dispatch(RoutingAction(destination: .todoList))
-    }
+    usernameTextField.text = ""
+    passwordTextField.text = ""
+    view.endEditing(true)
+    store.dispatch(RoutingAction(destination: .todoList))
+  }
+  
+  private func invalidCredentials() {
+    let alert = AlertHelper.okAlert(with: "Invalid Credentials", message: nil)
+    present(alert, animated: true, completion: nil)
   }
 }
 
 
 extension LoginViewController: StoreSubscriber {
   func newState(state: LoginState) {
-    if state.isLogin {
-      moveToDoList()
+    DispatchQueue.main.async { [weak self] in
+      switch state.loginType {
+      case .successfullyLogin:
+        self?.moveToDoList()
+      case .invalidCredentials:
+        self?.invalidCredentials()
+      default: break
+      }
     }
   }
 }

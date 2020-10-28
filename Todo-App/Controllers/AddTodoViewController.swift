@@ -47,11 +47,13 @@ class AddTodoViewController: UIViewController {
   }
   
   @IBAction private func deleteAction(_ anyObject: AnyObject) {
-  
-    DispatchQueue.main.async { [weak self] in
-      guard let todo = self?.todo else { return }
-      store.dispatch(DeleteTodoAction(todo: todo))
+    let alert = AlertHelper.defaultAlert(with: "Are you sure to delete this task?", message: nil) { (_) in
+      DispatchQueue.main.async { [weak self] in
+        guard let todo = self?.todo else { return }
+        store.dispatch(DeleteTodoAction(todo: todo))
+      }
     }
+    present(alert, animated: true, completion: nil)
   }
 
   @IBAction private func saveAction(_ anyObject: AnyObject) {
@@ -72,7 +74,7 @@ class AddTodoViewController: UIViewController {
 
 extension AddTodoViewController: StoreSubscriber {
   func newState(state: TodoState) {
-    if state.addedTodo {
+    if state.todoType == .addedTodo {
       DispatchQueue.main.async {
         self.navigationController?.popViewController(animated: true)
       }

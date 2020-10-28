@@ -7,5 +7,13 @@
 
 import ReSwift
 
+enum RegisterType {
+  case userAlreadyExist
+  case successfullyRegistered
+  case shortPassword
+  case `default`
+}
+
 struct RegisterState: StateType {
+  var registerType: RegisterType = .default
 }

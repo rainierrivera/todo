@@ -7,12 +7,14 @@
 
 import ReSwift
 
-struct LoginState: StateType {
-  var isLogin: Bool = false
-  init (isLogin: Bool = false) {
-    self.isLogin = isLogin
-  }
+enum LoginType {
+  case successfullyLogin
+  case invalidCredentials
+  case `default`
+}
 
+struct LoginState: StateType {
+  var loginType: LoginType = .default
 }
 
 

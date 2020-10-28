@@ -7,9 +7,13 @@
 
 import ReSwift
 
+enum TodoType {
+  case addedTodo
+  case alreadyExist
+  case `default`
+}
 struct TodoState: StateType {
-  var addedTodo: Bool = false
-  var isAlreadyExist: Bool = false
+  var todoType: TodoType = .default
   
   var todo: Todo?
 }

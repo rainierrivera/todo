@@ -40,10 +40,17 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Simple ToDo" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Z2-ky-e53">
+                                <rect key="frame" x="123" y="257" width="168.5" height="35"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="29"/>
+                                <color key="textColor" systemColor="systemTealColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="34Z-MR-0uI" firstAttribute="top" secondItem="1Z2-ky-e53" secondAttribute="bottom" constant="24" id="53O-eO-EQc"/>
                             <constraint firstItem="BtI-dg-cQa" firstAttribute="top" secondItem="mh8-d6-LI6" secondAttribute="bottom" constant="8" id="5eB-kK-gaW"/>
                             <constraint firstItem="mh8-d6-LI6" firstAttribute="leading" secondItem="fxS-E4-0V3" secondAttribute="leading" id="Gz2-Qr-nJB"/>
                             <constraint firstItem="mh8-d6-LI6" firstAttribute="trailing" secondItem="fxS-E4-0V3" secondAttribute="trailing" id="MDZ-LM-Y8j"/>
@@ -56,6 +63,7 @@
                             <constraint firstItem="34Z-MR-0uI" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="aho-0B-dYk"/>
                             <constraint firstItem="fxS-E4-0V3" firstAttribute="leading" secondItem="34Z-MR-0uI" secondAttribute="leading" id="pmy-Ak-8hE"/>
                             <constraint firstItem="fxS-E4-0V3" firstAttribute="trailing" secondItem="34Z-MR-0uI" secondAttribute="trailing" id="vR0-bS-uVN"/>
+                            <constraint firstItem="1Z2-ky-e53" firstAttribute="centerX" secondItem="34Z-MR-0uI" secondAttribute="centerX" id="ydz-RV-sOY"/>
                         </constraints>
                     </view>
                     <connections>

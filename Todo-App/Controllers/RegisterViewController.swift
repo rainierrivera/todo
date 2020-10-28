@@ -5,7 +5,7 @@
 //  Created by Collabera on 10/23/20.
 //
 
-import UIKit
+import ReSwift
 
 class RegisterViewController: UIViewController {
 
@@ -16,7 +16,15 @@ class RegisterViewController: UIViewController {
   @IBOutlet private weak var usernameTextField: UITextField!
   @IBOutlet private weak var passwordTextField: UITextField!
   
-  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    store.subscribe(self) {
+      $0.select {
+        $0.registrationState
+      }
+    }
+  }
   @IBAction private func registerAction(_ anyObject: AnyObject) {
     guard usernameTextField.text?.isEmpty == false || passwordTextField.text?.isEmpty == false  else {
       return
@@ -25,18 +33,40 @@ class RegisterViewController: UIViewController {
     let username = usernameTextField.text!
     let password = passwordTextField.text!
     
-    guard !userDefaults.isUserExist(with: username) else {
-      // Already registered
-      return
+    DispatchQueue.main.async {
+      store.dispatch(RegisterAction(username: username, password: password))
     }
     
-    let user = User(username: username, password: password, todos: [] )
+  }
+  
+  private func showAlert(withState state: RegisterState) {
     
-    DispatchQueue.main.async {
-      store.dispatch(RegisterAction(user: user))
+    let action: ((UIAlertAction) -> Void)? = { _ in
       store.dispatch(RoutingAction(destination: .pop))
     }
     
+    let alert: UIAlertController!
     
+    switch state.registerType {
+    case .successfullyRegistered:
+      alert = AlertHelper.okAlert(with: "Successfully Registered", message: nil, okHandler: action)
+    case .userAlreadyExist:
+      alert = AlertHelper.okAlert(with: "User Already Exist", message: nil, okHandler: nil)
+    case .shortPassword:
+      alert = AlertHelper.okAlert(with: "Password should be more than 4 characters.", message: nil, okHandler: nil)
+    default:
+      return
+    }
+    
+    present(alert, animated: true, completion: nil)
+    
+  }
+}
+
+extension RegisterViewController: StoreSubscriber {
+  func newState(state: RegisterState) {
+    DispatchQueue.main.async { [weak self] in
+      self?.showAlert(withState: state)
+    }
   }
 }

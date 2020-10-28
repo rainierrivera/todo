@@ -39,6 +39,7 @@
 		E1D57B6A254904BA00413A53 /* RegisterReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D57B69254904BA00413A53 /* RegisterReducer.swift */; };
 		E1D57B6D254904E600413A53 /* RegisterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D57B6C254904E600413A53 /* RegisterAction.swift */; };
 		E1D57B702549050900413A53 /* LoginActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D57B6F2549050900413A53 /* LoginActions.swift */; };
+		E1D57B7925490D9000413A53 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D57B7825490D9000413A53 /* AlertHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		E1D57B69254904BA00413A53 /* RegisterReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterReducer.swift; sourceTree = "<group>"; };
 		E1D57B6C254904E600413A53 /* RegisterAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterAction.swift; sourceTree = "<group>"; };
 		E1D57B6F2549050900413A53 /* LoginActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginActions.swift; sourceTree = "<group>"; };
+		E1D57B7825490D9000413A53 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 			children = (
 				E160FF1B25466A9500082F5E /* AppUserDefault.swift */,
 				E1D57B4B2546B66D00413A53 /* TableViewDataSource.swift */,
+				E1D57B7825490D9000413A53 /* AlertHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			files = (
 				E160FF17254283F200082F5E /* LoginReducer.swift in Sources */,
 				E1D57B6A254904BA00413A53 /* RegisterReducer.swift in Sources */,
+				E1D57B7925490D9000413A53 /* AlertHelper.swift in Sources */,
 				E1D57B612549045D00413A53 /* TodoListActions.swift in Sources */,
 				E1D57B6D254904E600413A53 /* RegisterAction.swift in Sources */,
 				E1CCF7C9254278DC00F28CC5 /* RegisterViewController.swift in Sources */,

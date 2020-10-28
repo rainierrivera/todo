@@ -8,5 +8,6 @@
 import ReSwift
 
 struct RegisterAction: Action {
-  let user: User
+  var username: String
+  var password: String
 }

@@ -14,26 +14,25 @@ func todoReducer(action: Action, state: TodoState?) -> TodoState {
   
   var state = state ?? TodoState()
   
+  state.todoType = .default
   guard let user = appUserDefault.getCurrentUser() else {
     return state
   }
-  
+
   switch action {
   case let addTodo as AddTodoAction:
     
     userTodos.forEach { todo in
       if todo.name == addTodo.todo.name {
-        state.isAlreadyExist = true
-        state.addedTodo = false
+        state.todoType = .alreadyExist
       }
     }
     
-    if state.isAlreadyExist {
+    if state.todoType == .alreadyExist {
       return state
     }
     
-    state.addedTodo = true
-    state.isAlreadyExist = false
+    state.todoType = .addedTodo
     user.todos.append(addTodo.todo)
     appUserDefault.setCurrentUser(with: user)
     appUserDefault.saveUser(user: user)
@@ -42,7 +41,7 @@ func todoReducer(action: Action, state: TodoState?) -> TodoState {
     guard let selectedTodo = state.todo else { return state }
     user.todos.forEach { (userTodo) in
       if userTodo.name == selectedTodo.name {
-        state.addedTodo = true
+        state.todoType = .addedTodo
         userTodo.name = editAction.todo.name
         appUserDefault.setCurrentUser(with: user)
         appUserDefault.saveUser(user: user)
@@ -52,7 +51,7 @@ func todoReducer(action: Action, state: TodoState?) -> TodoState {
   case _ as DeleteTodoAction:
     guard let selectedTodo = state.todo else { return state }
     user.todos = user.todos.filter { $0.name != selectedTodo.name }
-    state.addedTodo = true
+    state.todoType = .addedTodo
     appUserDefault.setCurrentUser(with: user)
     appUserDefault.saveUser(user: user)
     
@@ -60,7 +59,7 @@ func todoReducer(action: Action, state: TodoState?) -> TodoState {
     guard let selectedTodo = state.todo else { return state }
     user.todos.forEach { (userTodo) in
       if userTodo.name == selectedTodo.name {
-        state.addedTodo = true
+        state.todoType = .addedTodo
         userTodo.isDone = doneAction.isDone
         appUserDefault.setCurrentUser(with: user)
         appUserDefault.saveUser(user: user)
@@ -71,8 +70,7 @@ func todoReducer(action: Action, state: TodoState?) -> TodoState {
     state.todo = todoAction.todo
   default:
     state.todo = nil
-    state.addedTodo = false
-    state.isAlreadyExist = false
+    state.todoType = .default
     break
   }
   return state

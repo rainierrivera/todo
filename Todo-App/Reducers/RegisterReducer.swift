@@ -10,10 +10,24 @@ import ReSwift
 func registerReducer(action: Action, state: RegisterState?) -> RegisterState {
   let userDefault = AppUserDefault.shared
   
-  let state = state ?? RegisterState()
+  var state = state ?? RegisterState()
+  state.registerType = .default
+  
   switch  action {
   case let registerAction as RegisterAction:
-    userDefault.saveUser(user: registerAction.user)
+    guard !userDefault.isUserExist(with: registerAction.username) else {
+      state.registerType = .userAlreadyExist
+      return state
+    }
+    
+    guard registerAction.password.count > 4 else {
+      state.registerType = .shortPassword
+      return state
+    }
+    
+    let user = User(username: registerAction.username, password: registerAction.password, todos: [])
+    userDefault.saveUser(user: user)
+    state.registerType = .successfullyRegistered
   default:
     break
   }

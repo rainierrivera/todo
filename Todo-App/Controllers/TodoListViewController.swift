@@ -56,7 +56,10 @@ class TodoListViewController: UIViewController {
   }
   
   @IBAction private func signoutButton(_ anyObject: AnyObject) {
-    store.dispatch(RoutingAction(destination: .pop))
+    let alertController = AlertHelper.defaultAlert(with: "Are you sure yo want to sign out?", message: nil) { _ in
+      store.dispatch(RoutingAction(destination: .pop))
+    }
+    present(alertController, animated: true, completion: nil)
   }
 
 }
