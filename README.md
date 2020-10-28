@@ -6,6 +6,6 @@ Plain to app using ReSwift
 
 Use the cocoapods [cocopods](https://cocoapods.org/) to run Todo App.
 
-##Usage
+## Usage
 
 User the AppUserDefaults for creating users with todo, and saving json file to local directory.
