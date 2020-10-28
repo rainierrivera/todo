@@ -82,10 +82,14 @@ class AppUserDefault {
   }
   
   func getAllUsers() -> [User] {
-    guard userDefaults.data(forKey: ConstantKeys.allUsers) != nil else {
+    guard let data = userDefaults.data(forKey: ConstantKeys.allUsers) else {
       return []
     }
-    return Utility.shared.retrieveUserFromJsonFile() ?? []
+    do {
+      return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [User] ?? []
+    } catch {
+      fatalError("loadWidgetDataArray - Can't encode data: \(error)")
+    }
   }
   
   // MARK: Privates

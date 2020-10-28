@@ -74,6 +74,11 @@ class AddTodoViewController: UIViewController {
       }
     }
   }
+  
+  private func showExistAlert() {
+    let alert = AlertHelper.okAlert(with: "Task Already Exist", message: nil)
+    present(alert, animated: true, completion: nil)
+  }
 }
 
 // MARK: Extensions
@@ -83,6 +88,10 @@ extension AddTodoViewController: StoreSubscriber {
     if state.todoType == .addedTodo {
       DispatchQueue.main.async {
         self.navigationController?.popViewController(animated: true)
+      }
+    } else if state.todoType == .alreadyExist {
+      DispatchQueue.main.async { [weak self] in
+        self?.showExistAlert()
       }
     }
     
