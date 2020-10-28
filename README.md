@@ -1,5 +1,5 @@
 # todo
-Plain to app using ReSwift
+Plain Todo app using ReSwift
 
 
 ## Installation
