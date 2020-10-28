@@ -4,7 +4,7 @@ Plain Todo app using ReSwift
 
 ## Installation
 
-Use the cocoapods [cocopods](https://cocoapods.org/) to run Todo App.
+Use the [cocopods](https://cocoapods.org/) to install ReSwift to run Todo App.
 
 ## Usage
 
